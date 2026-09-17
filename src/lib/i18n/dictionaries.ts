@@ -30,6 +30,7 @@ export type Dictionary = {
   jobsTitle: string;
   jobsSub: (total: number, q?: string, worldwide?: boolean) => string;
   jobsSearch: string;
+  jobsSearching: string;
   jobsSearchPlaceholder: string;
   jobsScope: string;
   jobsAll: string;
@@ -124,6 +125,7 @@ const en: Dictionary = {
       worldwide ? " open worldwide" : ""
     }. Pick one and apply.`,
   jobsSearch: "Search",
+  jobsSearching: "Searching…",
   jobsSearchPlaceholder: "Keyword, stack, role…",
   jobsScope: "Location",
   jobsAll: "All",
@@ -221,6 +223,7 @@ const ka: Dictionary = {
       worldwide ? " მთელ მსოფლიოში" : ""
     }. აირჩიეთ და განაცხადეთ.`,
   jobsSearch: "ძიება",
+  jobsSearching: "იძებნება…",
   jobsSearchPlaceholder: "საკვანძო სიტყვა, სტეკი, როლი…",
   jobsScope: "მდებარეობა",
   jobsAll: "ყველა",

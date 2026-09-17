@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useRef } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { JobsScope } from "@/lib/jobs/types";
 import { useI18n } from "@/lib/i18n/LanguageProvider";
@@ -24,6 +24,7 @@ export function JobsFilters({
   const searchParams = useSearchParams();
   const { t } = useI18n();
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isSearching, setIsSearching] = useState(false);
   const q = searchParams.get("q") ?? initialQ;
   const scope: JobsScope =
     (searchParams.get("scope") ?? initialScope) === "worldwide"
@@ -36,6 +37,7 @@ export function JobsFilters({
   ];
 
   function go(nextQ: string, nextScope: JobsScope = scope) {
+    setIsSearching(true);
     const href = jobsHref(nextQ, nextScope);
     if (href === `${window.location.pathname}${window.location.search}`) {
       window.location.reload();
@@ -67,6 +69,7 @@ export function JobsFilters({
           defaultValue={q}
           placeholder={t.jobsSearchPlaceholder}
           enterKeyHint="search"
+          disabled={isSearching}
         />
       </div>
       <div className="jobs-filters__scope">
@@ -78,6 +81,7 @@ export function JobsFilters({
               type="button"
               className={scope === s.value ? "is-active" : undefined}
               onClick={() => go(currentQuery(), s.value)}
+              disabled={isSearching}
             >
               {s.label}
             </button>
@@ -87,8 +91,20 @@ export function JobsFilters({
           <input type="hidden" name="scope" value="worldwide" />
         ) : null}
       </div>
-      <button type="submit" className="jobs-filters__submit">
-        {t.jobsSearch}
+      <button
+        type="submit"
+        className="jobs-filters__submit"
+        disabled={isSearching}
+        aria-busy={isSearching}
+      >
+        {isSearching ? (
+          <>
+            <span className="btn-spinner" aria-hidden="true" />
+            <span className="sr-only">{t.jobsSearching}</span>
+          </>
+        ) : (
+          t.jobsSearch
+        )}
       </button>
     </form>
   );
