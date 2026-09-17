@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { Job } from "@/lib/jobs/types";
 import { SOURCE_LABEL } from "@/lib/jobs/labels";
+import { isWorldwideLocation } from "@/lib/jobs/worldwide";
 import { useI18n } from "@/lib/i18n/LanguageProvider";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
@@ -19,6 +20,7 @@ function timeAgo(iso: string, t: Dictionary): string {
 
 export function JobRow({ job }: { job: Job }) {
   const { t } = useI18n();
+  const worldwide = isWorldwideLocation(job.location);
 
   return (
     <Link href={`/jobs/${encodeURIComponent(job.id)}`} className="job-row">
@@ -27,6 +29,9 @@ export function JobRow({ job }: { job: Job }) {
         <h3 className="job-row__title">{job.title}</h3>
         <p className="job-row__meta">
           <span>{job.location}</span>
+          {worldwide ? (
+            <span className="job-row__badge">{t.jobsWorldwideBadge}</span>
+          ) : null}
           {job.salary ? <span>{job.salary}</span> : null}
           {job.jobType ? <span>{job.jobType}</span> : null}
         </p>

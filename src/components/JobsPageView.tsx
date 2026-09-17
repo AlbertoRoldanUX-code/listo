@@ -4,29 +4,36 @@ import { Suspense } from "react";
 import { JobRow } from "@/components/JobRow";
 import { JobsFilters } from "@/components/JobsFilters";
 import { SOURCE_LABEL } from "@/lib/jobs/labels";
-import type { Job, JobSource, JobsResponse } from "@/lib/jobs/types";
+import type { Job, JobSource, JobsResponse, JobsScope } from "@/lib/jobs/types";
 import { useI18n } from "@/lib/i18n/LanguageProvider";
 
 export function JobsPageView({
   data,
   q,
   source,
+  scope,
 }: {
   data: JobsResponse;
   q?: string;
   source: JobSource | "all";
+  scope: JobsScope;
 }) {
   const { t } = useI18n();
+  const worldwide = scope === "worldwide";
 
   return (
     <>
       <div className="page-head">
         <h1>{t.jobsTitle}</h1>
-        <p>{t.jobsSub(data.total, q)}</p>
+        <p>{t.jobsSub(data.total, q, worldwide)}</p>
       </div>
 
       <Suspense fallback={null}>
-        <JobsFilters initialQ={q ?? ""} initialSource={source} />
+        <JobsFilters
+          initialQ={q ?? ""}
+          initialSource={source}
+          initialScope={scope}
+        />
       </Suspense>
 
       <div className="sources-bar">

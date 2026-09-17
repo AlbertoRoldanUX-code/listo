@@ -28,14 +28,17 @@ export type Dictionary = {
   howCta: string;
   footer: string;
   jobsTitle: string;
-  jobsSub: (total: number, q?: string) => string;
+  jobsSub: (total: number, q?: string, worldwide?: boolean) => string;
   jobsSearch: string;
   jobsSearchPlaceholder: string;
   jobsSource: string;
+  jobsScope: string;
   jobsFilter: string;
   jobsAll: string;
+  jobsWorldwide: string;
   jobsEmpty: string;
   jobsError: string;
+  jobsWorldwideBadge: string;
   timeToday: string;
   timeYesterday: string;
   timeDays: (n: number) => string;
@@ -118,15 +121,20 @@ const en: Dictionary = {
   footer:
     "Data from Remotive, Jobicy, Himalayas, RemoteOK, and Arbeitnow. Listo does not publish its own listings: it takes you to apply on the original source.",
   jobsTitle: "Remote jobs",
-  jobsSub: (total, q) =>
-    `${total} listings${q ? ` for “${q}”` : ""} aggregated from public APIs.`,
+  jobsSub: (total, q, worldwide) =>
+    `${total} listings${q ? ` for “${q}”` : ""}${
+      worldwide ? " open worldwide" : ""
+    } aggregated from public APIs.`,
   jobsSearch: "Search",
   jobsSearchPlaceholder: "Keyword, stack, role…",
   jobsSource: "Source",
+  jobsScope: "Location",
   jobsFilter: "Filter",
   jobsAll: "All",
+  jobsWorldwide: "Worldwide only",
   jobsEmpty: "No results. Try another search.",
   jobsError: "error",
+  jobsWorldwideBadge: "Worldwide",
   timeToday: "Today",
   timeYesterday: "Yesterday",
   timeDays: (n) => `${n}d ago`,
@@ -212,13 +220,16 @@ const ka: Dictionary = {
   footer:
     "მონაცემები: Remotive, Jobicy, Himalayas, RemoteOK და Arbeitnow. Listo საკუთარ ვაკანსიებს არ აქვეყნებს — გადაგიყვანთ ორიგინალ წყაროზე.",
   jobsTitle: "დისტანციური ვაკანსიები",
-  jobsSub: (total, q) =>
-    `${total} განცხადება${q ? ` „${q}“-ზე` : ""} საჯარო API-ებიდან.`,
+  jobsSub: (total, q, worldwide) =>
+    `${total} განცხადება${q ? ` „${q}“-ზე` : ""}${worldwide ? " მთელ მსოფლიოში" : ""} საჯარო API-ებიდან.`,
   jobsSearch: "ძიება",
   jobsSearchPlaceholder: "საკვანძო სიტყვა, სტეკი, როლი…",
   jobsSource: "წყარო",
+  jobsScope: "მდებარეობა",
   jobsFilter: "ფილტრი",
   jobsAll: "ყველა",
+  jobsWorldwide: "მხოლოდ worldwide",
+  jobsWorldwideBadge: "Worldwide",
   jobsEmpty: "შედეგები არ არის. სცადეთ სხვა ძიება.",
   jobsError: "შეცდომა",
   timeToday: "დღეს",

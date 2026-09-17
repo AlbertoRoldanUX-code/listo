@@ -7,13 +7,18 @@ import { fetchHimalayas } from "./sources/himalayas";
 import { fetchJobicy } from "./sources/jobicy";
 import { fetchRemoteOk } from "./sources/remoteok";
 import { fetchRemotive } from "./sources/remotive";
+import { isWorldwideLocation } from "./worldwide";
 
 export { SOURCE_LABEL };
+export { isWorldwideLocation } from "./worldwide";
 
 async function fetchAggregated(query: JobsQuery): Promise<JobsResponse> {
   const limit = query.limit ?? 40;
   const q = query.q?.trim() || undefined;
   const wanted = query.source && query.source !== "all" ? query.source : "all";
+  const worldwideOnly = query.scope === "worldwide";
+  // Pull more when filtering by worldwide so the list still fills up.
+  const fetchLimit = worldwideOnly ? Math.max(limit, 80) : limit;
 
   const sources: JobsResponse["sources"] = {};
   const buckets: Job[][] = [];
@@ -22,11 +27,14 @@ async function fetchAggregated(query: JobsQuery): Promise<JobsResponse> {
     key: JobSource;
     run: () => Promise<Job[]>;
   }> = [
-    { key: "remotive", run: () => fetchRemotive(q, limit) },
-    { key: "jobicy", run: () => fetchJobicy(q, limit) },
-    { key: "himalayas", run: () => fetchHimalayas(q, Math.min(limit, 20)) },
-    { key: "remoteok", run: () => fetchRemoteOk(q, limit) },
-    { key: "arbeitnow", run: () => fetchArbeitnow(q, limit) },
+    { key: "remotive", run: () => fetchRemotive(q, fetchLimit) },
+    { key: "jobicy", run: () => fetchJobicy(q, fetchLimit) },
+    {
+      key: "himalayas",
+      run: () => fetchHimalayas(q, Math.min(fetchLimit, 20)),
+    },
+    { key: "remoteok", run: () => fetchRemoteOk(q, fetchLimit) },
+    { key: "arbeitnow", run: () => fetchArbeitnow(q, fetchLimit) },
   ];
   const runners = allRunners.filter(
     (s) => wanted === "all" || wanted === s.key,
@@ -68,6 +76,10 @@ async function fetchAggregated(query: JobsQuery): Promise<JobsResponse> {
     );
   }
 
+  if (worldwideOnly) {
+    jobs = jobs.filter((j) => isWorldwideLocation(j.location));
+  }
+
   if (q) {
     const needle = q.toLowerCase();
     jobs = jobs.sort((a, b) => score(b, needle) - score(a, needle));
@@ -93,12 +105,13 @@ export async function getJobs(query: JobsQuery = {}): Promise<JobsResponse> {
     q: query.q ?? "",
     category: query.category ?? "",
     source: query.source ?? "all",
+    scope: query.scope ?? "all",
     limit: query.limit ?? 40,
   });
 
   const cached = unstable_cache(
     async () => fetchAggregated(query),
-    ["jobs-aggregate-v2", key],
+    ["jobs-aggregate-v3", key],
     { revalidate: 1800 },
   );
 

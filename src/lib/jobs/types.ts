@@ -31,10 +31,13 @@ export type Job = {
   publishedAt: string;
 };
 
+export type JobsScope = "all" | "worldwide";
+
 export type JobsQuery = {
   q?: string;
   category?: string;
   source?: JobSource | "all";
+  scope?: JobsScope;
   limit?: number;
 };
 

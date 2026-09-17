@@ -1,31 +1,47 @@
 "use client";
 
+import { FormEvent, KeyboardEvent, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
 import { useI18n } from "@/lib/i18n/LanguageProvider";
 
 export function HeroSearch() {
-  const router = useRouter();
   const { t } = useI18n();
-  const [q, setQ] = useState("");
+  const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  function onSubmit(e: FormEvent) {
+  function go(query: string) {
+    const trimmed = query.trim();
+    const href = trimmed ? `/jobs?q=${encodeURIComponent(trimmed)}` : "/jobs";
+    router.push(href);
+    router.refresh();
+  }
+
+  function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const query = q.trim();
-    router.push(query ? `/jobs?q=${encodeURIComponent(query)}` : "/jobs");
+    go(inputRef.current?.value ?? "");
+  }
+
+  function onKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    go(e.currentTarget.value);
   }
 
   return (
-    <form className="hero-search" onSubmit={onSubmit}>
+    <form className="hero-search" action="/jobs" method="get" onSubmit={onSubmit}>
       <label className="sr-only" htmlFor="hero-q">
         {t.heroSearchLabel}
       </label>
       <input
+        ref={inputRef}
         id="hero-q"
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
+        name="q"
+        type="search"
+        defaultValue=""
+        onKeyDown={onKeyDown}
         placeholder={t.heroSearchPlaceholder}
         autoComplete="off"
+        enterKeyHint="search"
       />
       <button type="submit">{t.heroSearchButton}</button>
     </form>
