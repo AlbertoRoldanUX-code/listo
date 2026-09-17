@@ -23,11 +23,12 @@ export function EasyApply({ job }: { job: Job }) {
   }, []);
 
   const letter = useMemo(() => {
-    if (!profile) return "";
+    if (!profile?.coverLetter.trim()) return "";
     return buildCoverLetter(profile, job);
   }, [profile, job]);
 
   const ready = profile ? isProfileReady(profile) : false;
+  const hasLetter = Boolean(letter.trim());
 
   async function copyLetter() {
     if (!letter) return;
@@ -36,10 +37,7 @@ export function EasyApply({ job }: { job: Job }) {
     window.setTimeout(() => setCopied(false), 2000);
   }
 
-  async function applyEasy() {
-    if (ready && letter) {
-      await navigator.clipboard.writeText(letter);
-    }
+  function applyEasy() {
     applyToJob(job);
     setDone(true);
   }
@@ -60,7 +58,7 @@ export function EasyApply({ job }: { job: Job }) {
 
       <div className="easy-apply__actions">
         <button type="button" className="btn btn--primary" onClick={applyEasy}>
-          {ready ? t.easyCopyOpen : t.easyApplyNow}
+          {t.easyApplyNow}
         </button>
         <button type="button" className="btn btn--ghost" onClick={saveForLater}>
           {t.easySaveLater}
@@ -74,9 +72,12 @@ export function EasyApply({ job }: { job: Job }) {
             {t.easyCompleteProfile}
           </Link>
         </div>
-      ) : (
+      ) : null}
+
+      {ready && hasLetter ? (
         <>
           <label htmlFor="cover-preview">{t.easyLetterLabel}</label>
+          <p className="field-hint">{t.easyLetterHint}</p>
           <textarea id="cover-preview" readOnly rows={10} value={letter} />
           <div className="easy-apply__actions">
             <button type="button" className="btn btn--ghost" onClick={copyLetter}>
@@ -84,7 +85,7 @@ export function EasyApply({ job }: { job: Job }) {
             </button>
           </div>
         </>
-      )}
+      ) : null}
 
       {done ? (
         <p className="easy-apply__done">

@@ -117,14 +117,6 @@ export function ProfileForm() {
             </button>
           </div>
         </Field>
-        <Field label={t.fieldRole} htmlFor="role">
-          <input
-            id="role"
-            value={profile.role}
-            onChange={(e) => update("role", e.target.value)}
-            placeholder={t.fieldRolePh}
-          />
-        </Field>
         <Field label={t.fieldSkills} htmlFor="skills">
           <input
             id="skills"
@@ -141,22 +133,6 @@ export function ProfileForm() {
             placeholder="https://linkedin.com/in/…"
           />
         </Field>
-        <Field label={t.fieldPortfolio} htmlFor="portfolio">
-          <input
-            id="portfolio"
-            value={profile.portfolio}
-            onChange={(e) => update("portfolio", e.target.value)}
-          />
-        </Field>
-        <Field label={t.fieldResume} htmlFor="resumeUrl" wide>
-          <input
-            id="resumeUrl"
-            value={profile.resumeUrl}
-            onChange={(e) => update("resumeUrl", e.target.value)}
-            placeholder={t.fieldResumePh}
-            required
-          />
-        </Field>
         <Field label={t.fieldCover} htmlFor="coverLetter" wide>
           <textarea
             id="coverLetter"
@@ -164,6 +140,7 @@ export function ProfileForm() {
             value={profile.coverLetter}
             onChange={(e) => update("coverLetter", e.target.value)}
           />
+          <p className="field-hint">{t.fieldCoverHint}</p>
           <p className="field-hint">{t.fieldVariables}</p>
         </Field>
       </div>

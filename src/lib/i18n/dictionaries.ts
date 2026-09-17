@@ -50,8 +50,8 @@ export type Dictionary = {
   easyWarn: string;
   easyCompleteProfile: string;
   easyLetterLabel: string;
+  easyLetterHint: string;
   easyApplyNow: string;
-  easyCopyOpen: string;
   easyCopyOnly: string;
   easyCopied: string;
   easySaveLater: string;
@@ -71,15 +71,11 @@ export type Dictionary = {
   fieldLocationSuggested: string;
   fieldLocationAll: string;
   fieldLocationDetect: string;
-  fieldRole: string;
-  fieldRolePh: string;
   fieldSkills: string;
   fieldSkillsPh: string;
   fieldLinkedin: string;
-  fieldPortfolio: string;
-  fieldResume: string;
-  fieldResumePh: string;
   fieldCover: string;
+  fieldCoverHint: string;
   fieldVariables: string;
   profileSave: string;
   profileSaved: string;
@@ -107,18 +103,18 @@ const en: Dictionary = {
   brandHome: "Listo home",
   heroHeadline: "Remote jobs without the apply chaos.",
   heroSub:
-    "One profile. One letter. Find a role and apply in one move.",
+    "One profile. Tailor your CV to each offer. Apply without the chaos.",
   heroSearchPlaceholder: "React, design, product manager…",
   heroSearchButton: "Search",
   heroSearchLabel: "Search remote jobs",
   howTitle: "How it works",
   howSub: "Three steps. No required accounts. Everything stays on your device.",
   how1Title: "Set up your profile",
-  how1Body: "Name, resume, and a cover letter template with automatic variables.",
+  how1Body: "Name, skills, and contact details so you can adapt your CV to each offer.",
   how2Title: "Find the role",
   how2Body: "Browse remote openings and open the one that fits.",
   how3Title: "Apply in one move",
-  how3Body: "We copy your letter, open the posting, and save your tracking.",
+  how3Body: "Open the posting, track it here, and use a cover letter only if asked.",
   howCta: "Start with your profile",
   footer:
     "Listo helps you apply to remote jobs faster. Your profile stays on this device.",
@@ -145,13 +141,13 @@ const en: Dictionary = {
   back: "← Back",
   easyTitle: "Easy apply",
   easyBody:
-    "Copy your letter, open the posting, and track it here.",
-  easyWarn: "Add your name, email, and resume to auto-copy your cover letter.",
+    "Open the posting and track it here. Adapt your CV to the offer; add a cover letter only if they ask.",
+  easyWarn: "Add your name and email to finish setting up your profile.",
   easyCompleteProfile: "Complete profile",
-  easyLetterLabel: "Letter ready to paste",
+  easyLetterLabel: "Cover letter (optional)",
+  easyLetterHint: "Use only if the posting asks for a cover letter.",
   easyApplyNow: "Apply on official site",
-  easyCopyOpen: "Copy and open application",
-  easyCopyOnly: "Copy letter only",
+  easyCopyOnly: "Copy letter",
   easyCopied: "Copied",
   easySaveLater: "Save for later",
   easyDone: "Logged. Track it under",
@@ -159,9 +155,9 @@ const en: Dictionary = {
   easyLoading: "Loading profile…",
   profileTitle: "My profile",
   profileSub:
-    "Saved only in this browser. Use it to fill letters and apply faster on every listing.",
-  profileReady: "Profile ready for one-click apply",
-  profileMissing: "Name, email, or resume link still missing",
+    "Saved only in this browser. Use it as the base to tailor a CV for each offer.",
+  profileReady: "Profile ready to apply",
+  profileMissing: "Name or email still missing",
   profileLoading: "Loading profile…",
   fieldFullName: "Full name",
   fieldEmail: "Email",
@@ -171,17 +167,13 @@ const en: Dictionary = {
   fieldLocationSuggested: "Suggested",
   fieldLocationAll: "All timezones",
   fieldLocationDetect: "Use my timezone",
-  fieldRole: "Role you’re looking for",
-  fieldRolePh: "Frontend engineer, Product designer…",
   fieldSkills: "Key skills",
   fieldSkillsPh: "React, TypeScript, Figma…",
   fieldLinkedin: "LinkedIn",
-  fieldPortfolio: "Portfolio",
-  fieldResume: "Resume (public URL)",
-  fieldResumePh: "Google Drive, Dropbox, Notion…",
-  fieldCover: "Cover letter template",
+  fieldCover: "Cover letter template (optional)",
+  fieldCoverHint: "Only needed when an offer asks for a cover letter.",
   fieldVariables:
-    "Variables: {{title}}, {{company}}, {{skills}}, {{linkedin}}, {{resume}}, {{name}}, {{email}}, {{role}}",
+    "Variables: {{title}}, {{company}}, {{skills}}, {{linkedin}}, {{name}}, {{email}}",
   profileSave: "Save profile",
   profileSaved: "Saved on this device",
   appsTitle: "Applications",
@@ -208,18 +200,18 @@ const ka: Dictionary = {
   brandHome: "Listo მთავარი",
   heroHeadline: "დისტანციური სამუშაოები — განაცხადი უფრო მარტივად.",
   heroSub:
-    "ერთი პროფილი. ერთი წერილი. იპოვეთ როლი და განაცხადეთ ერთ მოქმედებაში.",
+    "ერთი პროფილი. მოარგეთ CV თითოეულ შეთავაზებას. განაცხადი უკეთესად.",
   heroSearchPlaceholder: "React, დიზაინი, product manager…",
   heroSearchButton: "ძიება",
   heroSearchLabel: "დისტანციური ვაკანსიების ძიება",
   howTitle: "როგორ მუშაობს",
   howSub: "სამი ნაბიჯი. ანგარიში არ არის სავალდებულო. ყველაფერი რჩება თქვენს მოწყობილობაზე.",
   how1Title: "შეავსეთ პროფილი",
-  how1Body: "სახელი, რეზიუმე და სამოტივაციო წერილის შაბლონი ავტომატური ცვლადებით.",
+  how1Body: "სახელი, უნარები და კონტაქტი — რომ CV თითოეულ შეთავაზებაზე მოარგოთ.",
   how2Title: "იპოვეთ როლი",
   how2Body: "ნახეთ დისტანციური ვაკანსიები და გახსენით ის, რაც გიხდებათ.",
   how3Title: "განაცხადი ერთ მოქმედებაში",
-  how3Body: "ვაკოპირებთ წერილს, ვხსნით განცხადებას და ვინახავთ თვალყურს.",
+  how3Body: "გახსენით განცხადება, დააფიქსირეთ აქ და წერილი მხოლოდ თუ ითხოვენ.",
   howCta: "დაიწყეთ პროფილით",
   footer:
     "Listo გეხმარებათ დისტანციურ ვაკანსიებზე უფრო სწრაფად განაცხადოთ. პროფილი რჩება ამ მოწყობილობაზე.",
@@ -245,13 +237,14 @@ const ka: Dictionary = {
   timeRecent: "ბოლო",
   back: "← უკან",
   easyTitle: "მარტივი განაცხადი",
-  easyBody: "დააკოპირეთ წერილი, გახსენით განცხადება და დააფიქსირეთ აქ.",
-  easyWarn: "წერილის ავტოკოპირებისთვის დაამატეთ სახელი, ელფოსტა და რეზიუმე.",
+  easyBody:
+    "გახსენით განცხადება და დააფიქსირეთ აქ. მოარგეთ CV შეთავაზებას; წერილი მხოლოდ თუ ითხოვენ.",
+  easyWarn: "პროფილის დასასრულებლად დაამატეთ სახელი და ელფოსტა.",
   easyCompleteProfile: "პროფილის შევსება",
-  easyLetterLabel: "წერილი ჩასასმელად",
+  easyLetterLabel: "სამოტივაციო წერილი (არასავალდებულო)",
+  easyLetterHint: "გამოიყენეთ მხოლოდ თუ განცხადება ითხოვს სამოტივაციო წერილს.",
   easyApplyNow: "განაცხადი ოფიციალურ საიტზე",
-  easyCopyOpen: "კოპირება და განაცხადის გახსნა",
-  easyCopyOnly: "მხოლოდ წერილის კოპირება",
+  easyCopyOnly: "წერილის კოპირება",
   easyCopied: "დაკოპირდა",
   easySaveLater: "შენახვა მოგვიანებით",
   easyDone: "დაფიქსირდა. თვალყური ადევნეთ",
@@ -259,9 +252,9 @@ const ka: Dictionary = {
   easyLoading: "პროფილი იტვირთება…",
   profileTitle: "ჩემი პროფილი",
   profileSub:
-    "ინახება მხოლოდ ამ ბრაუზერში. გამოიყენეთ წერილების შესავსებად და სწრაფი განაცხადისთვის.",
-  profileReady: "პროფილი მზადაა ერთჯერადი განაცხადისთვის",
-  profileMissing: "აკლია სახელი, ელფოსტა ან რეზიუმეს ბმული",
+    "ინახება მხოლოდ ამ ბრაუზერში. გამოიყენეთ საფუძვლად CV-ის მორგებისთვის თითოეულ შეთავაზებაზე.",
+  profileReady: "პროფილი მზადაა განაცხადისთვის",
+  profileMissing: "აკლია სახელი ან ელფოსტა",
   profileLoading: "პროფილი იტვირთება…",
   fieldFullName: "სრული სახელი",
   fieldEmail: "ელფოსტა",
@@ -271,17 +264,13 @@ const ka: Dictionary = {
   fieldLocationSuggested: "შემოთავაზებული",
   fieldLocationAll: "ყველა სარტყელი",
   fieldLocationDetect: "ჩემი სარტყელის გამოყენება",
-  fieldRole: "როლს რომელსაც ეძებთ",
-  fieldRolePh: "Frontend engineer, Product designer…",
   fieldSkills: "ძირითადი უნარები",
   fieldSkillsPh: "React, TypeScript, Figma…",
   fieldLinkedin: "LinkedIn",
-  fieldPortfolio: "პორტფოლიო",
-  fieldResume: "რეზიუმე (საჯარო URL)",
-  fieldResumePh: "Google Drive, Dropbox, Notion…",
-  fieldCover: "სამოტივაციო წერილის შაბლონი",
+  fieldCover: "სამოტივაციო წერილის შაბლონი (არასავალდებულო)",
+  fieldCoverHint: "საჭიროა მხოლოდ მაშინ, როცა შეთავაზება ითხოვს სამოტივაციო წერილს.",
   fieldVariables:
-    "ცვლადები: {{title}}, {{company}}, {{skills}}, {{linkedin}}, {{resume}}, {{name}}, {{email}}, {{role}}",
+    "ცვლადები: {{title}}, {{company}}, {{skills}}, {{linkedin}}, {{name}}, {{email}}",
   profileSave: "პროფილის შენახვა",
   profileSaved: "შენახულია ამ მოწყობილობაზე",
   appsTitle: "განაცხადები",

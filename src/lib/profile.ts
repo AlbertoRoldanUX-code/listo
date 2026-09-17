@@ -3,10 +3,7 @@ export type Profile = {
   email: string;
   phone: string;
   linkedin: string;
-  portfolio: string;
-  resumeUrl: string;
   location: string;
-  role: string;
   skills: string;
   coverLetter: string;
 };
@@ -16,13 +13,10 @@ export const EMPTY_PROFILE: Profile = {
   email: "",
   phone: "",
   linkedin: "",
-  portfolio: "",
-  resumeUrl: "",
   location: "",
-  role: "",
   skills: "",
   coverLetter:
-    "Hi,\n\nI’m interested in the {{title}} role at {{company}}. I have experience in {{skills}} and I’m looking for a remote role where I can contribute right away.\n\nYou can review my profile here: {{linkedin}}\nResume: {{resume}}\n\nThanks,\n{{name}}",
+    "Hi,\n\nI’m interested in the {{title}} role at {{company}}. I have experience in {{skills}} and I’m looking for a remote role where I can contribute right away.\n\nYou can review my profile here: {{linkedin}}\n\nThanks,\n{{name}}",
 };
 
 const PROFILE_KEY = "listo-profile";
@@ -32,7 +26,16 @@ export function loadProfile(): Profile {
   try {
     const raw = localStorage.getItem(PROFILE_KEY);
     if (!raw) return EMPTY_PROFILE;
-    return { ...EMPTY_PROFILE, ...JSON.parse(raw) };
+    const parsed = JSON.parse(raw) as Partial<Profile>;
+    return {
+      fullName: parsed.fullName ?? "",
+      email: parsed.email ?? "",
+      phone: parsed.phone ?? "",
+      linkedin: parsed.linkedin ?? "",
+      location: parsed.location ?? "",
+      skills: parsed.skills ?? "",
+      coverLetter: parsed.coverLetter ?? EMPTY_PROFILE.coverLetter,
+    };
   } catch {
     return EMPTY_PROFILE;
   }
@@ -43,7 +46,7 @@ export function saveProfile(profile: Profile): void {
 }
 
 export function isProfileReady(profile: Profile): boolean {
-  return Boolean(profile.fullName && profile.email && profile.resumeUrl);
+  return Boolean(profile.fullName && profile.email);
 }
 
 export function buildCoverLetter(
@@ -55,8 +58,6 @@ export function buildCoverLetter(
     .replaceAll("{{company}}", job.company)
     .replaceAll("{{skills}}", profile.skills || "my field")
     .replaceAll("{{linkedin}}", profile.linkedin || "—")
-    .replaceAll("{{resume}}", profile.resumeUrl || "—")
     .replaceAll("{{name}}", profile.fullName || "Applicant")
-    .replaceAll("{{email}}", profile.email || "")
-    .replaceAll("{{role}}", profile.role || "");
+    .replaceAll("{{email}}", profile.email || "");
 }

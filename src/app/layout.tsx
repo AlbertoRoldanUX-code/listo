@@ -26,7 +26,7 @@ const notoGeorgian = Noto_Sans_Georgian({
 export const metadata: Metadata = {
   title: "Listo — Remote jobs, easier apply",
   description:
-    "Find remote jobs and apply faster. Save your profile once, copy your letter, and go.",
+    "Find remote jobs and apply faster. Save your profile once, tailor your CV to each offer, and go.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
