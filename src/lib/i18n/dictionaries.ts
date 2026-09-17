@@ -39,6 +39,8 @@ export type Dictionary = {
   jobsEmpty: string;
   jobsError: string;
   jobsWorldwideBadge: string;
+  jobsApply: string;
+  jobsApplied: string;
   timeToday: string;
   timeYesterday: string;
   timeDays: (n: number) => string;
@@ -51,6 +53,7 @@ export type Dictionary = {
   easyWarn: string;
   easyCompleteProfile: string;
   easyLetterLabel: string;
+  easyApplyNow: string;
   easyCopyOpen: string;
   easyCopyOnly: string;
   easyCopied: string;
@@ -68,6 +71,9 @@ export type Dictionary = {
   fieldPhone: string;
   fieldLocation: string;
   fieldLocationPh: string;
+  fieldLocationSuggested: string;
+  fieldLocationAll: string;
+  fieldLocationDetect: string;
   fieldRole: string;
   fieldRolePh: string;
   fieldSkills: string;
@@ -135,6 +141,8 @@ const en: Dictionary = {
   jobsEmpty: "No results. Try another search.",
   jobsError: "error",
   jobsWorldwideBadge: "Worldwide",
+  jobsApply: "Apply",
+  jobsApplied: "Opened",
   timeToday: "Today",
   timeYesterday: "Yesterday",
   timeDays: (n) => `${n}d ago`,
@@ -144,10 +152,11 @@ const en: Dictionary = {
   back: "← Back",
   easyTitle: "Easy apply",
   easyBody:
-    "Save your profile once. Here we copy the letter, open the official link, and log the application.",
-  easyWarn: "Add your name, email, and resume to unlock the quick flow.",
+    "Open the official posting and track it here. With a profile, we also copy your cover letter.",
+  easyWarn: "Add your name, email, and resume to auto-copy your cover letter.",
   easyCompleteProfile: "Complete profile",
   easyLetterLabel: "Letter ready to paste",
+  easyApplyNow: "Apply on official site",
   easyCopyOpen: "Copy and open application",
   easyCopyOnly: "Copy letter only",
   easyCopied: "Copied",
@@ -164,8 +173,11 @@ const en: Dictionary = {
   fieldFullName: "Full name",
   fieldEmail: "Email",
   fieldPhone: "Phone",
-  fieldLocation: "Location / timezone",
-  fieldLocationPh: "GMT+4, Tbilisi, Europe…",
+  fieldLocation: "Timezone",
+  fieldLocationPh: "Select your timezone",
+  fieldLocationSuggested: "Suggested",
+  fieldLocationAll: "All timezones",
+  fieldLocationDetect: "Use my timezone",
   fieldRole: "Role you’re looking for",
   fieldRolePh: "Frontend engineer, Product designer…",
   fieldSkills: "Key skills",
@@ -232,6 +244,8 @@ const ka: Dictionary = {
   jobsWorldwideBadge: "Worldwide",
   jobsEmpty: "შედეგები არ არის. სცადეთ სხვა ძიება.",
   jobsError: "შეცდომა",
+  jobsApply: "განაცხადი",
+  jobsApplied: "გაიხსნა",
   timeToday: "დღეს",
   timeYesterday: "გუშინ",
   timeDays: (n) => `${n} დღის წინ`,
@@ -241,10 +255,11 @@ const ka: Dictionary = {
   back: "← უკან",
   easyTitle: "მარტივი განაცხადი",
   easyBody:
-    "შეინახეთ პროფილი ერთხელ. აქ ვაკოპირებთ წერილს, ვხსნით ოფიციალურ ბმულს და ვაფიქსირებთ განაცხადს.",
-  easyWarn: "სწრაფი ნაკადისთვის დაამატეთ სახელი, ელფოსტა და რეზიუმე.",
+    "გახსენით ოფიციალური განცხადება და დააფიქსირეთ აქ. პროფილით ავტომატურად დაკოპირდება წერილი.",
+  easyWarn: "წერილის ავტოკოპირებისთვის დაამატეთ სახელი, ელფოსტა და რეზიუმე.",
   easyCompleteProfile: "პროფილის შევსება",
   easyLetterLabel: "წერილი ჩასასმელად",
+  easyApplyNow: "განაცხადი ოფიციალურ საიტზე",
   easyCopyOpen: "კოპირება და განაცხადის გახსნა",
   easyCopyOnly: "მხოლოდ წერილის კოპირება",
   easyCopied: "დაკოპირდა",
@@ -261,8 +276,11 @@ const ka: Dictionary = {
   fieldFullName: "სრული სახელი",
   fieldEmail: "ელფოსტა",
   fieldPhone: "ტელეფონი",
-  fieldLocation: "მდებარეობა / დროის სარტყელი",
-  fieldLocationPh: "GMT+4, თბილისი, ევროპა…",
+  fieldLocation: "დროის სარტყელი",
+  fieldLocationPh: "აირჩიეთ დროის სარტყელი",
+  fieldLocationSuggested: "შემოთავაზებული",
+  fieldLocationAll: "ყველა სარტყელი",
+  fieldLocationDetect: "ჩემი სარტყელის გამოყენება",
   fieldRole: "როლს რომელსაც ეძებთ",
   fieldRolePh: "Frontend engineer, Product designer…",
   fieldSkills: "ძირითადი უნარები",

@@ -1,19 +1,16 @@
 "use client";
 
 import { FormEvent, KeyboardEvent, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { useI18n } from "@/lib/i18n/LanguageProvider";
 
 export function HeroSearch() {
   const { t } = useI18n();
-  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
   function go(query: string) {
     const trimmed = query.trim();
     const href = trimmed ? `/jobs?q=${encodeURIComponent(trimmed)}` : "/jobs";
-    router.push(href);
-    router.refresh();
+    window.location.assign(href);
   }
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -39,6 +36,10 @@ export function HeroSearch() {
         type="search"
         defaultValue=""
         onKeyDown={onKeyDown}
+        onSearch={(e) => {
+          e.preventDefault();
+          go(e.currentTarget.value);
+        }}
         placeholder={t.heroSearchPlaceholder}
         autoComplete="off"
         enterKeyHint="search"

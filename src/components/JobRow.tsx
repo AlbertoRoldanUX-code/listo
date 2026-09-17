@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { applyToJob } from "@/lib/apply";
 import type { Job } from "@/lib/jobs/types";
 import { SOURCE_LABEL } from "@/lib/jobs/labels";
 import { isWorldwideLocation } from "@/lib/jobs/worldwide";
@@ -20,11 +22,20 @@ function timeAgo(iso: string, t: Dictionary): string {
 
 export function JobRow({ job }: { job: Job }) {
   const { t } = useI18n();
+  const [applied, setApplied] = useState(false);
+  const href = `/jobs/${encodeURIComponent(job.id)}`;
   const worldwide = isWorldwideLocation(job.location);
 
+  function handleApply(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    applyToJob(job);
+    setApplied(true);
+  }
+
   return (
-    <Link href={`/jobs/${encodeURIComponent(job.id)}`} className="job-row">
-      <div className="job-row__main">
+    <article className="job-row">
+      <Link href={href} className="job-row__main">
         <p className="job-row__company">{job.company}</p>
         <h3 className="job-row__title">{job.title}</h3>
         <p className="job-row__meta">
@@ -35,11 +46,18 @@ export function JobRow({ job }: { job: Job }) {
           {job.salary ? <span>{job.salary}</span> : null}
           {job.jobType ? <span>{job.jobType}</span> : null}
         </p>
-      </div>
+      </Link>
       <div className="job-row__side">
         <span className="job-row__source">{SOURCE_LABEL[job.source]}</span>
         <span className="job-row__date">{timeAgo(job.publishedAt, t)}</span>
+        <button
+          type="button"
+          className="btn btn--primary job-row__apply"
+          onClick={handleApply}
+        >
+          {applied ? t.jobsApplied : t.jobsApply}
+        </button>
       </div>
-    </Link>
+    </article>
   );
 }

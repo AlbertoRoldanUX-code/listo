@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   EMPTY_PROFILE,
   isProfileReady,
@@ -9,12 +9,20 @@ import {
   type Profile,
 } from "@/lib/profile";
 import { useI18n } from "@/lib/i18n/LanguageProvider";
+import {
+  formatTimezoneLabel,
+  getDetectedTimezone,
+  getTimezoneOptions,
+  isKnownTimezone,
+} from "@/lib/timezones";
 
 export function ProfileForm() {
   const { t } = useI18n();
   const [profile, setProfile] = useState<Profile>(EMPTY_PROFILE);
   const [saved, setSaved] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const timezones = useMemo(() => getTimezoneOptions(), []);
+  const detected = useMemo(() => getDetectedTimezone(), []);
 
   useEffect(() => {
     setProfile(loadProfile());
@@ -37,6 +45,9 @@ export function ProfileForm() {
   }
 
   const ready = isProfileReady(profile);
+  const locationIsCustom =
+    Boolean(profile.location) && !isKnownTimezone(profile.location);
+  const selectValue = locationIsCustom ? "__custom__" : profile.location;
 
   return (
     <form className="profile-form" onSubmit={onSubmit}>
@@ -70,12 +81,41 @@ export function ProfileForm() {
           />
         </Field>
         <Field label={t.fieldLocation} htmlFor="location">
-          <input
-            id="location"
-            value={profile.location}
-            onChange={(e) => update("location", e.target.value)}
-            placeholder={t.fieldLocationPh}
-          />
+          <div className="timezone-field">
+            <select
+              id="location"
+              value={selectValue}
+              onChange={(e) => {
+                const next = e.target.value;
+                if (next === "__custom__") return;
+                update("location", next);
+              }}
+            >
+              <option value="">{t.fieldLocationPh}</option>
+              <optgroup label={t.fieldLocationSuggested}>
+                <option value={detected}>
+                  {formatTimezoneLabel(detected)} ({detected})
+                </option>
+              </optgroup>
+              <optgroup label={t.fieldLocationAll}>
+                {timezones.map((tz) => (
+                  <option key={tz.id} value={tz.id}>
+                    {tz.label}
+                  </option>
+                ))}
+              </optgroup>
+              {locationIsCustom ? (
+                <option value="__custom__">{profile.location}</option>
+              ) : null}
+            </select>
+            <button
+              type="button"
+              className="btn btn--ghost timezone-field__detect"
+              onClick={() => update("location", detected)}
+            >
+              {t.fieldLocationDetect}
+            </button>
+          </div>
         </Field>
         <Field label={t.fieldRole} htmlFor="role">
           <input

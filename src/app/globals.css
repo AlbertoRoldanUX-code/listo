@@ -72,7 +72,8 @@ a {
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -421,13 +422,18 @@ textarea {
 
 @media (min-width: 860px) {
   .jobs-filters {
-    grid-template-columns: 1.4fr 1fr auto;
+    grid-template-columns: 1.4fr 1.2fr auto;
     align-items: end;
+  }
+
+  .jobs-filters__scope {
+    grid-column: 1 / -1;
   }
 }
 
 .jobs-filters label,
 .jobs-filters__source > span,
+.jobs-filters__scope > span,
 .field label,
 .easy-apply label {
   display: block;
@@ -440,6 +446,7 @@ textarea {
 .jobs-filters input,
 .field input,
 .field textarea,
+.field select,
 .easy-apply textarea {
   width: 100%;
   border: 1px solid var(--line);
@@ -449,11 +456,36 @@ textarea {
   outline: none;
 }
 
+.field select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%),
+    linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position:
+    calc(100% - 1.15rem) calc(50% - 0.15rem),
+    calc(100% - 0.85rem) calc(50% - 0.15rem);
+  background-size: 0.35rem 0.35rem, 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+  padding-right: 2.25rem;
+  cursor: pointer;
+}
+
 .jobs-filters input:focus,
 .field input:focus,
-.field textarea:focus {
+.field textarea:focus,
+.field select:focus {
   border-color: color-mix(in oklab, var(--sea) 55%, transparent);
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--lime) 35%, transparent);
+}
+
+.timezone-field {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.timezone-field__detect {
+  justify-self: start;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
 }
 
 .source-pills {
@@ -498,6 +530,8 @@ textarea {
   display: grid;
   gap: 0.75rem;
   padding: 1.15rem 1.2rem;
+  text-decoration: none;
+  color: inherit;
   border-radius: 1rem;
   border: 1px solid transparent;
   background: color-mix(in oklab, white 55%, transparent);
@@ -538,6 +572,27 @@ textarea {
   opacity: 0.72;
 }
 
+.job-row__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: color-mix(in oklab, var(--lime) 55%, white);
+  opacity: 1;
+}
+
+.job-row__main {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+
 .job-row__side {
   display: flex;
   flex-direction: column;
@@ -562,6 +617,12 @@ textarea {
 .job-row__date {
   font-size: 0.82rem;
   opacity: 0.6;
+}
+
+.job-row__apply {
+  margin-top: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
 }
 
 .sources-bar {

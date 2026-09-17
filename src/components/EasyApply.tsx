@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { upsertApplication } from "@/lib/applications";
+import { applyToJob, saveJobForLater } from "@/lib/apply";
 import {
   buildCoverLetter,
   isProfileReady,
@@ -30,39 +30,22 @@ export function EasyApply({ job }: { job: Job }) {
   const ready = profile ? isProfileReady(profile) : false;
 
   async function copyLetter() {
+    if (!letter) return;
     await navigator.clipboard.writeText(letter);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 2000);
   }
 
   async function applyEasy() {
-    if (!profile || !ready) return;
-    await navigator.clipboard.writeText(letter);
-    upsertApplication({
-      id: crypto.randomUUID(),
-      jobId: job.id,
-      title: job.title,
-      company: job.company,
-      applyUrl: job.applyUrl,
-      source: job.source,
-      status: "applied",
-      appliedAt: new Date().toISOString(),
-    });
+    if (ready && letter) {
+      await navigator.clipboard.writeText(letter);
+    }
+    applyToJob(job);
     setDone(true);
-    window.open(job.applyUrl, "_blank", "noopener,noreferrer");
   }
 
   function saveForLater() {
-    upsertApplication({
-      id: crypto.randomUUID(),
-      jobId: job.id,
-      title: job.title,
-      company: job.company,
-      applyUrl: job.applyUrl,
-      source: job.source,
-      status: "saved",
-      appliedAt: new Date().toISOString(),
-    });
+    saveJobForLater(job);
     setDone(true);
   }
 
@@ -71,14 +54,23 @@ export function EasyApply({ job }: { job: Job }) {
   }
 
   return (
-    <aside className="easy-apply">
+    <aside className="easy-apply" id="apply">
       <h2>{t.easyTitle}</h2>
       <p>{t.easyBody}</p>
+
+      <div className="easy-apply__actions">
+        <button type="button" className="btn btn--primary" onClick={applyEasy}>
+          {ready ? t.easyCopyOpen : t.easyApplyNow}
+        </button>
+        <button type="button" className="btn btn--ghost" onClick={saveForLater}>
+          {t.easySaveLater}
+        </button>
+      </div>
 
       {!ready ? (
         <div className="easy-apply__warn">
           <p>{t.easyWarn}</p>
-          <Link href="/profile" className="btn btn--primary">
+          <Link href="/profile" className="btn btn--ghost">
             {t.easyCompleteProfile}
           </Link>
         </div>
@@ -87,14 +79,8 @@ export function EasyApply({ job }: { job: Job }) {
           <label htmlFor="cover-preview">{t.easyLetterLabel}</label>
           <textarea id="cover-preview" readOnly rows={10} value={letter} />
           <div className="easy-apply__actions">
-            <button type="button" className="btn btn--primary" onClick={applyEasy}>
-              {t.easyCopyOpen}
-            </button>
             <button type="button" className="btn btn--ghost" onClick={copyLetter}>
               {copied ? t.easyCopied : t.easyCopyOnly}
-            </button>
-            <button type="button" className="btn btn--ghost" onClick={saveForLater}>
-              {t.easySaveLater}
             </button>
           </div>
         </>

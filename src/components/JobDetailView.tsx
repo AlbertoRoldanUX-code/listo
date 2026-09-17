@@ -4,10 +4,12 @@ import Link from "next/link";
 import { EasyApply } from "@/components/EasyApply";
 import { SOURCE_LABEL } from "@/lib/jobs/labels";
 import type { Job } from "@/lib/jobs/types";
+import { isWorldwideLocation } from "@/lib/jobs/worldwide";
 import { useI18n } from "@/lib/i18n/LanguageProvider";
 
 export function JobDetailView({ job }: { job: Job }) {
   const { t } = useI18n();
+  const worldwide = isWorldwideLocation(job.location);
 
   return (
     <div className="job-detail">
@@ -21,6 +23,9 @@ export function JobDetailView({ job }: { job: Job }) {
         <h1>{job.title}</h1>
         <p className="job-detail__meta">
           <span>{job.location}</span>
+          {worldwide ? (
+            <span className="job-row__badge">{t.jobsWorldwideBadge}</span>
+          ) : null}
           {job.salary ? <span>{job.salary}</span> : null}
           {job.jobType ? <span>{job.jobType}</span> : null}
           {job.category ? <span>{job.category}</span> : null}
