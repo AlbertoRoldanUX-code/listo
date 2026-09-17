@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { applyToJob } from "@/lib/apply";
 import type { Job } from "@/lib/jobs/types";
-import { SOURCE_LABEL } from "@/lib/jobs/labels";
 import { isWorldwideLocation } from "@/lib/jobs/worldwide";
 import { useI18n } from "@/lib/i18n/LanguageProvider";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
@@ -48,7 +47,6 @@ export function JobRow({ job }: { job: Job }) {
         </p>
       </Link>
       <div className="job-row__side">
-        <span className="job-row__source">{SOURCE_LABEL[job.source]}</span>
         <span className="job-row__date">{timeAgo(job.publishedAt, t)}</span>
         <button
           type="button"

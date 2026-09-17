@@ -31,13 +31,11 @@ export type Dictionary = {
   jobsSub: (total: number, q?: string, worldwide?: boolean) => string;
   jobsSearch: string;
   jobsSearchPlaceholder: string;
-  jobsSource: string;
   jobsScope: string;
   jobsFilter: string;
   jobsAll: string;
   jobsWorldwide: string;
   jobsEmpty: string;
-  jobsError: string;
   jobsWorldwideBadge: string;
   jobsApply: string;
   jobsApplied: string;
@@ -128,18 +126,16 @@ const en: Dictionary = {
     "Listo aggregates public remote listings and sends you to the original posting to apply. It does not publish its own jobs.",
   jobsTitle: "Remote jobs",
   jobsSub: (total, q, worldwide) =>
-    `${total} listings${q ? ` for “${q}”` : ""}${
+    `${total} remote roles${q ? ` for “${q}”` : ""}${
       worldwide ? " open worldwide" : ""
-    } aggregated from public APIs.`,
+    }. Find one and apply.`,
   jobsSearch: "Search",
   jobsSearchPlaceholder: "Keyword, stack, role…",
-  jobsSource: "Source",
   jobsScope: "Location",
   jobsFilter: "Filter",
   jobsAll: "All",
   jobsWorldwide: "Worldwide only",
   jobsEmpty: "No results. Try another search.",
-  jobsError: "error",
   jobsWorldwideBadge: "Worldwide",
   jobsApply: "Apply",
   jobsApplied: "Opened",
@@ -233,17 +229,17 @@ const ka: Dictionary = {
     "Listo აერთიანებს საჯარო დისტანციურ ვაკანსიებს და გადაგიყვანთ ორიგინალ განცხადებაზე. საკუთარ ვაკანსიებს არ აქვეყნებს.",
   jobsTitle: "დისტანციური ვაკანსიები",
   jobsSub: (total, q, worldwide) =>
-    `${total} განცხადება${q ? ` „${q}“-ზე` : ""}${worldwide ? " მთელ მსოფლიოში" : ""} საჯარო API-ებიდან.`,
+    `${total} დისტანციური როლი${q ? ` „${q}“-ზე` : ""}${
+      worldwide ? " მთელ მსოფლიოში" : ""
+    }. იპოვეთ და განაცხადეთ.`,
   jobsSearch: "ძიება",
   jobsSearchPlaceholder: "საკვანძო სიტყვა, სტეკი, როლი…",
-  jobsSource: "წყარო",
   jobsScope: "მდებარეობა",
   jobsFilter: "ფილტრი",
   jobsAll: "ყველა",
   jobsWorldwide: "მხოლოდ worldwide",
   jobsWorldwideBadge: "Worldwide",
   jobsEmpty: "შედეგები არ არის. სცადეთ სხვა ძიება.",
-  jobsError: "შეცდომა",
   jobsApply: "განაცხადი",
   jobsApplied: "გაიხსნა",
   timeToday: "დღეს",

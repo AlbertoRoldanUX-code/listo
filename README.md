@@ -4,7 +4,7 @@ Find remote jobs and apply faster.
 
 ## Features
 
-- Aggregates listings from **Remotive**, **Jobicy**, **Himalayas**, **RemoteOK**, and **Arbeitnow**
+- Aggregates listings from **Remotive**, **Jobicy**, **RemoteOK**, and **Arbeitnow**
 - Saves your profile and cover letter template in the browser
 - **Easy apply**: copy letter, open the official posting, track applications
 - UI in **English** with a **Georgian (ქართული)** option in the header

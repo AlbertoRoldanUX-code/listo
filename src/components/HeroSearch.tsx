@@ -36,10 +36,6 @@ export function HeroSearch() {
         type="search"
         defaultValue=""
         onKeyDown={onKeyDown}
-        onSearch={(e) => {
-          e.preventDefault();
-          go(e.currentTarget.value);
-        }}
         placeholder={t.heroSearchPlaceholder}
         autoComplete="off"
         enterKeyHint="search"

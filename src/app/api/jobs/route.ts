@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   const source = (searchParams.get("source") as JobSource | "all" | null) ?? "all";
   const scope: JobsScope =
     searchParams.get("scope") === "worldwide" ? "worldwide" : "all";
-  const limit = Number(searchParams.get("limit") ?? "500");
+  const limit = Number(searchParams.get("limit") ?? "800");
 
   try {
     const data = await getJobs({
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
       category,
       source,
       scope,
-      limit: Number.isFinite(limit) ? limit : 500,
+      limit: Number.isFinite(limit) ? limit : 800,
     });
     return NextResponse.json(data);
   } catch (error) {

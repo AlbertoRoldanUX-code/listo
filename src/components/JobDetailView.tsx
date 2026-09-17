@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { EasyApply } from "@/components/EasyApply";
-import { SOURCE_LABEL } from "@/lib/jobs/labels";
 import type { Job } from "@/lib/jobs/types";
 import { isWorldwideLocation } from "@/lib/jobs/worldwide";
 import { useI18n } from "@/lib/i18n/LanguageProvider";
@@ -17,9 +16,7 @@ export function JobDetailView({ job }: { job: Job }) {
         <p>
           <Link href="/jobs">{t.back}</Link>
         </p>
-        <p className="job-row__company">
-          {job.company} · {SOURCE_LABEL[job.source]}
-        </p>
+        <p className="job-row__company">{job.company}</p>
         <h1>{job.title}</h1>
         <p className="job-detail__meta">
           <span>{job.location}</span>

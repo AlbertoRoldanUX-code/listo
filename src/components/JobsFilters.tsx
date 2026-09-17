@@ -2,43 +2,41 @@
 
 import { FormEvent, KeyboardEvent, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { SOURCE_LABEL } from "@/lib/jobs/labels";
-import type { JobSource } from "@/lib/jobs/types";
-import { ALL_SOURCES } from "@/lib/jobs/types";
+import type { JobsScope } from "@/lib/jobs/types";
 import { useI18n } from "@/lib/i18n/LanguageProvider";
 
-function jobsHref(nextQ: string, nextSource: string) {
+function jobsHref(nextQ: string, nextScope: JobsScope) {
   const params = new URLSearchParams();
   const query = nextQ.trim();
   if (query) params.set("q", query);
-  if (nextSource && nextSource !== "all") params.set("source", nextSource);
+  if (nextScope === "worldwide") params.set("scope", "worldwide");
   const qs = params.toString();
   return qs ? `/jobs?${qs}` : "/jobs";
 }
 
 export function JobsFilters({
   initialQ = "",
-  initialSource = "all",
+  initialScope = "all",
 }: {
   initialQ?: string;
-  initialSource?: string;
+  initialScope?: JobsScope;
 }) {
   const searchParams = useSearchParams();
   const { t } = useI18n();
   const inputRef = useRef<HTMLInputElement>(null);
   const q = searchParams.get("q") ?? initialQ;
-  const source = searchParams.get("source") ?? initialSource;
+  const scope: JobsScope =
+    (searchParams.get("scope") ?? initialScope) === "worldwide"
+      ? "worldwide"
+      : "all";
 
-  const sources = [
+  const scopes: { value: JobsScope; label: string }[] = [
     { value: "all", label: t.jobsAll },
-    ...ALL_SOURCES.map((value) => ({
-      value,
-      label: SOURCE_LABEL[value as JobSource],
-    })),
+    { value: "worldwide", label: t.jobsWorldwide },
   ];
 
-  function go(nextQ: string, nextSource: string = source) {
-    const href = jobsHref(nextQ, nextSource);
+  function go(nextQ: string, nextScope: JobsScope = scope) {
+    const href = jobsHref(nextQ, nextScope);
     if (href === `${window.location.pathname}${window.location.search}`) {
       window.location.reload();
       return;
@@ -51,7 +49,7 @@ export function JobsFilters({
   }
 
   function runSearch(raw: string) {
-    go(raw, source);
+    go(raw, scope);
   }
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -77,30 +75,26 @@ export function JobsFilters({
           type="search"
           defaultValue={q}
           onKeyDown={onSearchKeyDown}
-          onSearch={(e) => {
-            e.preventDefault();
-            runSearch(e.currentTarget.value);
-          }}
           placeholder={t.jobsSearchPlaceholder}
           enterKeyHint="search"
         />
       </div>
-      <div className="jobs-filters__source">
-        <span id="source-label">{t.jobsSource}</span>
-        <div className="source-pills" role="group" aria-labelledby="source-label">
-          {sources.map((s) => (
+      <div className="jobs-filters__scope">
+        <span id="scope-label">{t.jobsScope}</span>
+        <div className="source-pills" role="group" aria-labelledby="scope-label">
+          {scopes.map((s) => (
             <button
               key={s.value}
               type="button"
-              className={source === s.value ? "is-active" : undefined}
+              className={scope === s.value ? "is-active" : undefined}
               onClick={() => go(currentQuery(), s.value)}
             >
               {s.label}
             </button>
           ))}
         </div>
-        {source !== "all" ? (
-          <input type="hidden" name="source" value={source} />
+        {scope === "worldwide" ? (
+          <input type="hidden" name="scope" value="worldwide" />
         ) : null}
       </div>
       <button type="submit" className="jobs-filters__submit">

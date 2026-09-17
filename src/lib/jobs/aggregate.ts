@@ -1,42 +1,28 @@
 import { unstable_cache } from "next/cache";
 import type { Job, JobSource, JobsQuery, JobsResponse } from "./types";
 import { ALL_SOURCES } from "./types";
-import { SOURCE_LABEL } from "./labels";
 import { fetchArbeitnow } from "./sources/arbeitnow";
 import { fetchJobicy } from "./sources/jobicy";
 import { fetchRemoteOk } from "./sources/remoteok";
 import { fetchRemotive } from "./sources/remotive";
 import { isWorldwideLocation } from "./worldwide";
 
-export { SOURCE_LABEL };
 export { isWorldwideLocation } from "./worldwide";
 
-const AGGREGATE_CACHE = "jobs-aggregate-v4";
-const MEMORY_TTL_MS = 30 * 60 * 1000;
-
-const memoryJobs = new Map<string, { job: Job; at: number }>();
-
-function rememberJob(job: Job) {
-  memoryJobs.set(job.id, { job, at: Date.now() });
-}
-
-function readRememberedJob(id: string): Job | null {
-  const hit = memoryJobs.get(id);
-  if (!hit) return null;
-  if (Date.now() - hit.at > MEMORY_TTL_MS) {
-    memoryJobs.delete(id);
-    return null;
-  }
-  return hit.job;
-}
+const AGGREGATE_CACHE = "jobs-aggregate-v5";
+const JOB_DETAIL_CACHE = "job-detail-v5";
+const DEFAULT_LIMIT = 800;
+const MAX_LIMIT = 2000;
 
 async function fetchAggregated(query: JobsQuery): Promise<JobsResponse> {
-  const limit = query.limit ?? 40;
+  const limit = Math.min(Math.max(query.limit ?? DEFAULT_LIMIT, 1), MAX_LIMIT);
   const q = query.q?.trim() || undefined;
   const wanted = query.source && query.source !== "all" ? query.source : "all";
   const worldwideOnly = query.scope === "worldwide";
-  // Pull more when filtering by worldwide so the list still fills up.
-  const fetchLimit = worldwideOnly ? Math.max(limit, 80) : limit;
+  // Over-fetch so worldwide / category filters still leave a full list.
+  const fetchLimit = worldwideOnly
+    ? Math.min(Math.max(limit * 2, 400), MAX_LIMIT)
+    : Math.min(Math.max(limit, 200), MAX_LIMIT);
 
   const sources: JobsResponse["sources"] = {};
   const buckets: Job[][] = [];
@@ -104,7 +90,7 @@ async function fetchAggregated(query: JobsQuery): Promise<JobsResponse> {
     );
   }
 
-  jobs = dedupe(jobs).slice(0, Math.max(limit * 2, 100));
+  jobs = dedupe(jobs).slice(0, limit);
 
   return {
     jobs,
@@ -120,7 +106,7 @@ export async function getJobs(query: JobsQuery = {}): Promise<JobsResponse> {
     category: query.category ?? "",
     source: query.source ?? "all",
     scope: query.scope ?? "all",
-    limit: query.limit ?? 40,
+    limit: query.limit ?? DEFAULT_LIMIT,
   });
 
   const cached = unstable_cache(
@@ -130,24 +116,54 @@ export async function getJobs(query: JobsQuery = {}): Promise<JobsResponse> {
   );
 
   const data = await cached();
-  // Re-hydrate even on Data Cache hits so /jobs/[id] can resolve listed rows.
-  for (const job of data.jobs) rememberJob(job);
+  // Warm per-id cache without blocking the list response (large result sets).
+  void Promise.all(data.jobs.map((job) => warmJobCache(job)));
   return data;
 }
 
 export async function getJobById(id: string): Promise<Job | null> {
-  const remembered = readRememberedJob(id);
-  if (remembered) return remembered;
+  const warmed = await readWarmedJob(id);
+  if (warmed) return warmed;
+  // Fallback for shared links / cold cache — do not cache misses.
+  return lookupJob(id);
+}
 
+async function warmJobCache(job: Job): Promise<Job> {
+  return unstable_cache(async () => job, [JOB_DETAIL_CACHE, job.id], {
+    revalidate: 1800,
+  })();
+}
+
+/** Read a job previously warmed by getJobs. Throws on miss so we never cache null. */
+async function readWarmedJob(id: string): Promise<Job | null> {
+  try {
+    return await unstable_cache(
+      async (): Promise<Job> => {
+        throw new Error("NOT_WARMED");
+      },
+      [JOB_DETAIL_CACHE, id],
+      { revalidate: 1800 },
+    )();
+  } catch {
+    return null;
+  }
+}
+
+async function lookupJob(id: string): Promise<Job | null> {
   const source = ALL_SOURCES.find((s) => id.startsWith(`${s}-`));
   if (!source) return null;
 
-  const scoped = await getJobs({ source, limit: 100 });
+  const scoped = await fetchAggregated({ source, limit: MAX_LIMIT });
   const found = scoped.jobs.find((j) => j.id === id);
-  if (found) return found;
+  if (found) {
+    await warmJobCache(found);
+    return found;
+  }
 
-  const all = await getJobs({ limit: 100 });
-  return all.jobs.find((j) => j.id === id) ?? null;
+  const all = await fetchAggregated({ limit: MAX_LIMIT });
+  const again = all.jobs.find((j) => j.id === id) ?? null;
+  if (again) await warmJobCache(again);
+  return again;
 }
 
 function interleave(buckets: Job[][]): Job[] {

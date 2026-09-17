@@ -19,10 +19,11 @@ type RemotiveResponse = {
   jobs?: RemotiveJob[];
 };
 
-export async function fetchRemotive(search?: string, limit = 500): Promise<Job[]> {
+export async function fetchRemotive(search?: string, limit = 800): Promise<Job[]> {
   const params = new URLSearchParams();
   if (search) params.set("search", search);
-  params.set("limit", String(limit));
+  // Remotive default is "all"; still pass a high ceiling for predictable payloads.
+  params.set("limit", String(Math.min(Math.max(limit, 1), 2000)));
 
   const res = await fetch(`https://remotive.com/api/remote-jobs?${params}`, {
     next: { revalidate: 1800 },

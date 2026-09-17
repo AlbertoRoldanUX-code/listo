@@ -18,9 +18,9 @@ type ArbeitnowResponse = {
   links?: { next?: string | null };
 };
 
-const MAX_PAGES = 8;
+const MAX_PAGES = 12;
 
-export async function fetchArbeitnow(search?: string, limit = 400): Promise<Job[]> {
+export async function fetchArbeitnow(search?: string, limit = 800): Promise<Job[]> {
   const collected: ArbeitnowJob[] = [];
   const needle = search?.toLowerCase();
 
