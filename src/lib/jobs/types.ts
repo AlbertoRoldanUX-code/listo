@@ -1,14 +1,12 @@
 export type JobSource =
   | "remotive"
   | "jobicy"
-  | "himalayas"
   | "remoteok"
   | "arbeitnow";
 
 export const ALL_SOURCES: JobSource[] = [
   "remotive",
   "jobicy",
-  "himalayas",
   "remoteok",
   "arbeitnow",
 ];

@@ -26,7 +26,7 @@ export default async function JobsPage({
   const scope: JobsScope =
     params.scope === "worldwide" ? "worldwide" : "all";
 
-  const data = await getJobs({ q, source, scope, limit: 50 });
+  const data = await getJobs({ q, source, scope, limit: 500 });
 
   return <JobsPageView data={data} q={q} source={source} scope={scope} />;
 }

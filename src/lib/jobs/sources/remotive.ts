@@ -19,7 +19,7 @@ type RemotiveResponse = {
   jobs?: RemotiveJob[];
 };
 
-export async function fetchRemotive(search?: string, limit = 40): Promise<Job[]> {
+export async function fetchRemotive(search?: string, limit = 500): Promise<Job[]> {
   const params = new URLSearchParams();
   if (search) params.set("search", search);
   params.set("limit", String(limit));

@@ -22,9 +22,10 @@ type JobicyResponse = {
   jobs?: JobicyJob[];
 };
 
-export async function fetchJobicy(search?: string, limit = 40): Promise<Job[]> {
+export async function fetchJobicy(search?: string, limit = 100): Promise<Job[]> {
   const params = new URLSearchParams();
-  params.set("count", String(Math.min(limit, 100)));
+  // Jobicy caps at 100 per request.
+  params.set("count", String(Math.min(Math.max(limit, 1), 100)));
   if (search && search.length >= 3) params.set("tag", search.slice(0, 50));
 
   const res = await fetch(`https://jobicy.com/api/v2/remote-jobs?${params}`, {

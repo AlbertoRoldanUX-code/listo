@@ -15,51 +15,71 @@ type ArbeitnowJob = {
 
 type ArbeitnowResponse = {
   data?: ArbeitnowJob[];
+  links?: { next?: string | null };
 };
 
-export async function fetchArbeitnow(search?: string, limit = 40): Promise<Job[]> {
-  const res = await fetch("https://www.arbeitnow.com/api/job-board-api", {
-    next: { revalidate: 1800 },
-    headers: { Accept: "application/json" },
-  });
+const MAX_PAGES = 8;
 
-  if (!res.ok) throw new Error(`Arbeitnow ${res.status}`);
-
-  const data = (await res.json()) as ArbeitnowResponse;
+export async function fetchArbeitnow(search?: string, limit = 400): Promise<Job[]> {
+  const collected: ArbeitnowJob[] = [];
   const needle = search?.toLowerCase();
 
-  return (data.data ?? [])
-    .filter((job) => job.remote !== false)
-    .filter((job) => {
-      if (!needle) return true;
-      const hay = `${job.title} ${job.company_name} ${(job.tags ?? []).join(" ")}`.toLowerCase();
-      return hay.includes(needle);
-    })
-    .slice(0, limit)
-    .map((job) => {
-      const slug = job.slug || hash(`${job.company_name}-${job.title}`);
-      const applyUrl = job.url || `https://www.arbeitnow.com/jobs/${slug}`;
-      const publishedAt =
-        typeof job.created_at === "number"
-          ? new Date(job.created_at * (job.created_at < 1e12 ? 1000 : 1)).toISOString()
-          : job.created_at || new Date().toISOString();
+  for (let page = 1; page <= MAX_PAGES && collected.length < limit; page++) {
+    const res = await fetch(
+      `https://www.arbeitnow.com/api/job-board-api?page=${page}`,
+      {
+        next: { revalidate: 1800 },
+        headers: { Accept: "application/json" },
+      },
+    );
 
-      return {
-        id: `arbeitnow-${slug}`,
-        source: "arbeitnow" as const,
-        title: job.title || "Remote role",
-        company: job.company_name || "Company",
-        url: applyUrl,
-        applyUrl,
-        description: stripHtml(job.description || ""),
-        descriptionHtml: job.description,
-        category: job.tags?.[0],
-        tags: [...(job.tags ?? []), ...(job.job_types ?? [])],
-        location: job.location || "Remote",
-        jobType: job.job_types?.[0],
-        publishedAt,
-      };
-    });
+    if (!res.ok) {
+      if (page === 1) throw new Error(`Arbeitnow ${res.status}`);
+      break;
+    }
+
+    const data = (await res.json()) as ArbeitnowResponse;
+    const batch = data.data ?? [];
+    if (!batch.length) break;
+
+    for (const job of batch) {
+      if (job.remote === false) continue;
+      if (needle) {
+        const hay =
+          `${job.title} ${job.company_name} ${(job.tags ?? []).join(" ")}`.toLowerCase();
+        if (!hay.includes(needle)) continue;
+      }
+      collected.push(job);
+      if (collected.length >= limit) break;
+    }
+
+    if (!data.links?.next) break;
+  }
+
+  return collected.slice(0, limit).map((job) => {
+    const slug = job.slug || hash(`${job.company_name}-${job.title}`);
+    const applyUrl = job.url || `https://www.arbeitnow.com/jobs/${slug}`;
+    const publishedAt =
+      typeof job.created_at === "number"
+        ? new Date(job.created_at * (job.created_at < 1e12 ? 1000 : 1)).toISOString()
+        : job.created_at || new Date().toISOString();
+
+    return {
+      id: `arbeitnow-${slug}`,
+      source: "arbeitnow" as const,
+      title: job.title || "Remote role",
+      company: job.company_name || "Company",
+      url: applyUrl,
+      applyUrl,
+      description: stripHtml(job.description || ""),
+      descriptionHtml: job.description,
+      category: job.tags?.[0],
+      tags: [...(job.tags ?? []), ...(job.job_types ?? [])],
+      location: job.location || "Remote",
+      jobType: job.job_types?.[0],
+      publishedAt,
+    };
+  });
 }
 
 function stripHtml(html: string): string {
@@ -67,6 +87,8 @@ function stripHtml(html: string): string {
     .replace(/<[^>]+>/g, " ")
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
     .replace(/\s+/g, " ")
     .trim();
 }

@@ -18,7 +18,7 @@ type RemoteOkJob = {
   salary_currency?: string;
 };
 
-export async function fetchRemoteOk(search?: string, limit = 40): Promise<Job[]> {
+export async function fetchRemoteOk(search?: string, limit = 500): Promise<Job[]> {
   const res = await fetch("https://remoteok.com/api", {
     next: { revalidate: 1800 },
     headers: {

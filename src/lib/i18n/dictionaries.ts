@@ -120,12 +120,12 @@ const en: Dictionary = {
   how1Body: "Name, resume, and a cover letter template with automatic variables.",
   how2Title: "Find the role",
   how2Body:
-    "We search Remotive, Jobicy, Himalayas, RemoteOK, and Arbeitnow and unify the results.",
+    "We pull remote listings from public job boards and show them in one place.",
   how3Title: "Apply in one move",
   how3Body: "We copy the letter, open the official posting, and save your tracking.",
   howCta: "Start with your profile",
   footer:
-    "Data from Remotive, Jobicy, Himalayas, RemoteOK, and Arbeitnow. Listo does not publish its own listings: it takes you to apply on the original source.",
+    "Listo aggregates public remote listings and sends you to the original posting to apply. It does not publish its own jobs.",
   jobsTitle: "Remote jobs",
   jobsSub: (total, q, worldwide) =>
     `${total} listings${q ? ` for “${q}”` : ""}${
@@ -225,12 +225,12 @@ const ka: Dictionary = {
   how1Body: "სახელი, რეზიუმე და სამოტივაციო წერილის შაბლონი ავტომატური ცვლადებით.",
   how2Title: "იპოვეთ როლი",
   how2Body:
-    "ვეძებთ Remotive, Jobicy, Himalayas, RemoteOK და Arbeitnow-ზე და ვაერთიანებთ შედეგებს.",
+    "ვაგროვებთ დისტანციურ განცხადებებს საჯარო ბორდებიდან და ვაჩვენებთ ერთ სიაში.",
   how3Title: "განაცხადი ერთ მოქმედებაში",
   how3Body: "ვაკოპირებთ წერილს, ვხსნით ოფიციალურ განცხადებას და ვინახავთ თვალყურს.",
   howCta: "დაიწყეთ პროფილით",
   footer:
-    "მონაცემები: Remotive, Jobicy, Himalayas, RemoteOK და Arbeitnow. Listo საკუთარ ვაკანსიებს არ აქვეყნებს — გადაგიყვანთ ორიგინალ წყაროზე.",
+    "Listo აერთიანებს საჯარო დისტანციურ ვაკანსიებს და გადაგიყვანთ ორიგინალ განცხადებაზე. საკუთარ ვაკანსიებს არ აქვეყნებს.",
   jobsTitle: "დისტანციური ვაკანსიები",
   jobsSub: (total, q, worldwide) =>
     `${total} განცხადება${q ? ` „${q}“-ზე` : ""}${worldwide ? " მთელ მსოფლიოში" : ""} საჯარო API-ებიდან.`,

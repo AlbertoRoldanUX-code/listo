@@ -3,7 +3,6 @@ import type { Job, JobSource, JobsQuery, JobsResponse } from "./types";
 import { ALL_SOURCES } from "./types";
 import { SOURCE_LABEL } from "./labels";
 import { fetchArbeitnow } from "./sources/arbeitnow";
-import { fetchHimalayas } from "./sources/himalayas";
 import { fetchJobicy } from "./sources/jobicy";
 import { fetchRemoteOk } from "./sources/remoteok";
 import { fetchRemotive } from "./sources/remotive";
@@ -11,6 +10,25 @@ import { isWorldwideLocation } from "./worldwide";
 
 export { SOURCE_LABEL };
 export { isWorldwideLocation } from "./worldwide";
+
+const AGGREGATE_CACHE = "jobs-aggregate-v4";
+const MEMORY_TTL_MS = 30 * 60 * 1000;
+
+const memoryJobs = new Map<string, { job: Job; at: number }>();
+
+function rememberJob(job: Job) {
+  memoryJobs.set(job.id, { job, at: Date.now() });
+}
+
+function readRememberedJob(id: string): Job | null {
+  const hit = memoryJobs.get(id);
+  if (!hit) return null;
+  if (Date.now() - hit.at > MEMORY_TTL_MS) {
+    memoryJobs.delete(id);
+    return null;
+  }
+  return hit.job;
+}
 
 async function fetchAggregated(query: JobsQuery): Promise<JobsResponse> {
   const limit = query.limit ?? 40;
@@ -29,10 +47,6 @@ async function fetchAggregated(query: JobsQuery): Promise<JobsResponse> {
   }> = [
     { key: "remotive", run: () => fetchRemotive(q, fetchLimit) },
     { key: "jobicy", run: () => fetchJobicy(q, fetchLimit) },
-    {
-      key: "himalayas",
-      run: () => fetchHimalayas(q, Math.min(fetchLimit, 20)),
-    },
     { key: "remoteok", run: () => fetchRemoteOk(q, fetchLimit) },
     { key: "arbeitnow", run: () => fetchArbeitnow(q, fetchLimit) },
   ];
@@ -111,16 +125,22 @@ export async function getJobs(query: JobsQuery = {}): Promise<JobsResponse> {
 
   const cached = unstable_cache(
     async () => fetchAggregated(query),
-    ["jobs-aggregate-v3", key],
+    [AGGREGATE_CACHE, key],
     { revalidate: 1800 },
   );
 
-  return cached();
+  const data = await cached();
+  // Re-hydrate even on Data Cache hits so /jobs/[id] can resolve listed rows.
+  for (const job of data.jobs) rememberJob(job);
+  return data;
 }
 
 export async function getJobById(id: string): Promise<Job | null> {
-  const source = id.split("-")[0] as JobSource;
-  if (!ALL_SOURCES.includes(source)) return null;
+  const remembered = readRememberedJob(id);
+  if (remembered) return remembered;
+
+  const source = ALL_SOURCES.find((s) => id.startsWith(`${s}-`));
+  if (!source) return null;
 
   const scoped = await getJobs({ source, limit: 100 });
   const found = scoped.jobs.find((j) => j.id === id);
