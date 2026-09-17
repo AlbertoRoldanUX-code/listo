@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, KeyboardEvent, useRef } from "react";
+import { FormEvent, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import type { JobsScope } from "@/lib/jobs/types";
 import { useI18n } from "@/lib/i18n/LanguageProvider";
@@ -48,19 +48,10 @@ export function JobsFilters({
     return inputRef.current?.value ?? q;
   }
 
-  function runSearch(raw: string) {
-    go(raw, scope);
-  }
-
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    runSearch(currentQuery());
-  }
-
-  function onSearchKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key !== "Enter") return;
-    e.preventDefault();
-    runSearch(e.currentTarget.value);
+    // Empty query is intentional: show all offers.
+    go(currentQuery(), scope);
   }
 
   return (
@@ -74,7 +65,6 @@ export function JobsFilters({
           name="q"
           type="search"
           defaultValue={q}
-          onKeyDown={onSearchKeyDown}
           placeholder={t.jobsSearchPlaceholder}
           enterKeyHint="search"
         />
@@ -98,7 +88,7 @@ export function JobsFilters({
         ) : null}
       </div>
       <button type="submit" className="jobs-filters__submit">
-        {t.jobsFilter}
+        {t.jobsSearch}
       </button>
     </form>
   );

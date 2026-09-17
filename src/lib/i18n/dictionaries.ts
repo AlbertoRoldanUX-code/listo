@@ -32,7 +32,6 @@ export type Dictionary = {
   jobsSearch: string;
   jobsSearchPlaceholder: string;
   jobsScope: string;
-  jobsFilter: string;
   jobsAll: string;
   jobsWorldwide: string;
   jobsEmpty: string;
@@ -108,7 +107,7 @@ const en: Dictionary = {
   brandHome: "Listo home",
   heroHeadline: "Remote jobs without the apply chaos.",
   heroSub:
-    "One profile. One letter. Hundreds of aggregated listings. Applying should be the easy step.",
+    "One profile. One letter. Find a role and apply in one move.",
   heroSearchPlaceholder: "React, design, product manager…",
   heroSearchButton: "Search",
   heroSearchLabel: "Search remote jobs",
@@ -117,22 +116,20 @@ const en: Dictionary = {
   how1Title: "Set up your profile",
   how1Body: "Name, resume, and a cover letter template with automatic variables.",
   how2Title: "Find the role",
-  how2Body:
-    "We pull remote listings from public job boards and show them in one place.",
+  how2Body: "Browse remote openings and open the one that fits.",
   how3Title: "Apply in one move",
-  how3Body: "We copy the letter, open the official posting, and save your tracking.",
+  how3Body: "We copy your letter, open the posting, and save your tracking.",
   howCta: "Start with your profile",
   footer:
-    "Listo aggregates public remote listings and sends you to the original posting to apply. It does not publish its own jobs.",
+    "Listo helps you apply to remote jobs faster. Your profile stays on this device.",
   jobsTitle: "Remote jobs",
   jobsSub: (total, q, worldwide) =>
     `${total} remote roles${q ? ` for “${q}”` : ""}${
       worldwide ? " open worldwide" : ""
-    }. Find one and apply.`,
+    }. Pick one and apply.`,
   jobsSearch: "Search",
   jobsSearchPlaceholder: "Keyword, stack, role…",
   jobsScope: "Location",
-  jobsFilter: "Filter",
   jobsAll: "All",
   jobsWorldwide: "Worldwide only",
   jobsEmpty: "No results. Try another search.",
@@ -148,7 +145,7 @@ const en: Dictionary = {
   back: "← Back",
   easyTitle: "Easy apply",
   easyBody:
-    "Open the official posting and track it here. With a profile, we also copy your cover letter.",
+    "Copy your letter, open the posting, and track it here.",
   easyWarn: "Add your name, email, and resume to auto-copy your cover letter.",
   easyCompleteProfile: "Complete profile",
   easyLetterLabel: "Letter ready to paste",
@@ -211,7 +208,7 @@ const ka: Dictionary = {
   brandHome: "Listo მთავარი",
   heroHeadline: "დისტანციური სამუშაოები — განაცხადი უფრო მარტივად.",
   heroSub:
-    "ერთი პროფილი. ერთი წერილი. ასობით გაერთიანებული ვაკანსია. განაცხადი უნდა იყოს მარტივი ნაბიჯი.",
+    "ერთი პროფილი. ერთი წერილი. იპოვეთ როლი და განაცხადეთ ერთ მოქმედებაში.",
   heroSearchPlaceholder: "React, დიზაინი, product manager…",
   heroSearchButton: "ძიება",
   heroSearchLabel: "დისტანციური ვაკანსიების ძიება",
@@ -220,22 +217,20 @@ const ka: Dictionary = {
   how1Title: "შეავსეთ პროფილი",
   how1Body: "სახელი, რეზიუმე და სამოტივაციო წერილის შაბლონი ავტომატური ცვლადებით.",
   how2Title: "იპოვეთ როლი",
-  how2Body:
-    "ვაგროვებთ დისტანციურ განცხადებებს საჯარო ბორდებიდან და ვაჩვენებთ ერთ სიაში.",
+  how2Body: "ნახეთ დისტანციური ვაკანსიები და გახსენით ის, რაც გიხდებათ.",
   how3Title: "განაცხადი ერთ მოქმედებაში",
-  how3Body: "ვაკოპირებთ წერილს, ვხსნით ოფიციალურ განცხადებას და ვინახავთ თვალყურს.",
+  how3Body: "ვაკოპირებთ წერილს, ვხსნით განცხადებას და ვინახავთ თვალყურს.",
   howCta: "დაიწყეთ პროფილით",
   footer:
-    "Listo აერთიანებს საჯარო დისტანციურ ვაკანსიებს და გადაგიყვანთ ორიგინალ განცხადებაზე. საკუთარ ვაკანსიებს არ აქვეყნებს.",
+    "Listo გეხმარებათ დისტანციურ ვაკანსიებზე უფრო სწრაფად განაცხადოთ. პროფილი რჩება ამ მოწყობილობაზე.",
   jobsTitle: "დისტანციური ვაკანსიები",
   jobsSub: (total, q, worldwide) =>
     `${total} დისტანციური როლი${q ? ` „${q}“-ზე` : ""}${
       worldwide ? " მთელ მსოფლიოში" : ""
-    }. იპოვეთ და განაცხადეთ.`,
+    }. აირჩიეთ და განაცხადეთ.`,
   jobsSearch: "ძიება",
   jobsSearchPlaceholder: "საკვანძო სიტყვა, სტეკი, როლი…",
   jobsScope: "მდებარეობა",
-  jobsFilter: "ფილტრი",
   jobsAll: "ყველა",
   jobsWorldwide: "მხოლოდ worldwide",
   jobsWorldwideBadge: "Worldwide",
@@ -250,8 +245,7 @@ const ka: Dictionary = {
   timeRecent: "ბოლო",
   back: "← უკან",
   easyTitle: "მარტივი განაცხადი",
-  easyBody:
-    "გახსენით ოფიციალური განცხადება და დააფიქსირეთ აქ. პროფილით ავტომატურად დაკოპირდება წერილი.",
+  easyBody: "დააკოპირეთ წერილი, გახსენით განცხადება და დააფიქსირეთ აქ.",
   easyWarn: "წერილის ავტოკოპირებისთვის დაამატეთ სახელი, ელფოსტა და რეზიუმე.",
   easyCompleteProfile: "პროფილის შევსება",
   easyLetterLabel: "წერილი ჩასასმელად",

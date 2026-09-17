@@ -483,13 +483,13 @@ select {
   font-size: 0.85rem;
 }
 
-.source-pills {
+.scope-pills {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
 }
 
-.source-pills button {
+.scope-pills button {
   border: 1px solid var(--line);
   background: transparent;
   border-radius: 999px;
@@ -497,7 +497,7 @@ select {
   cursor: pointer;
 }
 
-.source-pills button.is-active {
+.scope-pills button.is-active {
   background: var(--sea);
   color: var(--foam);
   border-color: var(--sea);
