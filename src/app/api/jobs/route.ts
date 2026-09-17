@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
         total: 0,
         fetchedAt: new Date().toISOString(),
         sources: {},
-        error: error instanceof Error ? error.message : "Error al obtener empleos",
+        error: error instanceof Error ? error.message : "Failed to fetch jobs",
       },
       { status: 500 },
     );

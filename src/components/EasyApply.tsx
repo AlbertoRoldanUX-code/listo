@@ -10,8 +10,10 @@ import {
   type Profile,
 } from "@/lib/profile";
 import type { Job } from "@/lib/jobs/types";
+import { useI18n } from "@/lib/i18n/LanguageProvider";
 
 export function EasyApply({ job }: { job: Job }) {
+  const { t } = useI18n();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [copied, setCopied] = useState(false);
   const [done, setDone] = useState(false);
@@ -65,37 +67,34 @@ export function EasyApply({ job }: { job: Job }) {
   }
 
   if (!profile) {
-    return <div className="easy-apply easy-apply--loading">Loading profile…</div>;
+    return <div className="easy-apply easy-apply--loading">{t.easyLoading}</div>;
   }
 
   return (
     <aside className="easy-apply">
-      <h2>Easy apply</h2>
-      <p>
-        Save your profile once. Here we copy the letter, open the official link,
-        and log the application.
-      </p>
+      <h2>{t.easyTitle}</h2>
+      <p>{t.easyBody}</p>
 
       {!ready ? (
         <div className="easy-apply__warn">
-          <p>Add your name, email, and resume to unlock the quick flow.</p>
-          <Link href="/perfil" className="btn btn--primary">
-            Complete profile
+          <p>{t.easyWarn}</p>
+          <Link href="/profile" className="btn btn--primary">
+            {t.easyCompleteProfile}
           </Link>
         </div>
       ) : (
         <>
-          <label htmlFor="cover-preview">Letter ready to paste</label>
+          <label htmlFor="cover-preview">{t.easyLetterLabel}</label>
           <textarea id="cover-preview" readOnly rows={10} value={letter} />
           <div className="easy-apply__actions">
             <button type="button" className="btn btn--primary" onClick={applyEasy}>
-              Copy and open application
+              {t.easyCopyOpen}
             </button>
             <button type="button" className="btn btn--ghost" onClick={copyLetter}>
-              {copied ? "Copied" : "Copy letter only"}
+              {copied ? t.easyCopied : t.easyCopyOnly}
             </button>
             <button type="button" className="btn btn--ghost" onClick={saveForLater}>
-              Save for later
+              {t.easySaveLater}
             </button>
           </div>
         </>
@@ -103,8 +102,8 @@ export function EasyApply({ job }: { job: Job }) {
 
       {done ? (
         <p className="easy-apply__done">
-          Logged. Track it under{" "}
-          <Link href="/postulaciones">Applications</Link>.
+          {t.easyDone}{" "}
+          <Link href="/applications">{t.navApplications}</Link>.
         </p>
       ) : null}
 
@@ -114,7 +113,7 @@ export function EasyApply({ job }: { job: Job }) {
         target="_blank"
         rel="noreferrer"
       >
-        Go to original posting →
+        {t.easyOriginal}
       </a>
     </aside>
   );

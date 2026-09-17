@@ -1,14 +1,15 @@
-# Remote jobs
+# Listo
 
-A site to find remote jobs and apply faster.
+Find remote jobs and apply faster.
 
-## What it does
+## Features
 
-- Aggregates listings from **Remotive**, **Jobicy**, and **Himalayas** (public APIs, no API key)
+- Aggregates listings from **Remotive**, **Jobicy**, **Himalayas**, **RemoteOK**, and **Arbeitnow**
 - Saves your profile and cover letter template in the browser
-- **Easy apply** flow: copy the letter, open the official posting, and log the application
+- **Easy apply**: copy letter, open the official posting, track applications
+- UI in **English** with a **Georgian (ქართული)** option in the header
 
-## Get started
+## Run
 
 ```bash
 npm install
@@ -19,15 +20,17 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Routes
 
-| Route | Use |
-|------|-----|
+| Route | Purpose |
+|------|---------|
 | `/` | Landing |
-| `/empleos` | Listings and filters |
-| `/empleos/[id]` | Detail + easy apply |
-| `/perfil` | Profile and cover letter |
-| `/postulaciones` | Local tracking |
+| `/jobs` | Listings and filters |
+| `/jobs/[id]` | Detail + easy apply |
+| `/profile` | Profile and letter |
+| `/applications` | Local tracking |
 | `/api/jobs` | Jobs JSON |
+
+Legacy Spanish paths (`/empleos`, `/perfil`, `/postulaciones`) redirect to the English routes.
 
 ## Note
 
-This site does not submit applications to companies: it takes you to the original source with your letter ready to paste.
+Listo does not submit applications to employers. It opens the original source with your letter ready to paste.

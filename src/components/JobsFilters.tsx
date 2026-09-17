@@ -2,13 +2,10 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
-
-const sources = [
-  { value: "all", label: "All" },
-  { value: "remotive", label: "Remotive" },
-  { value: "jobicy", label: "Jobicy" },
-  { value: "himalayas", label: "Himalayas" },
-];
+import { SOURCE_LABEL } from "@/lib/jobs/labels";
+import type { JobSource } from "@/lib/jobs/types";
+import { ALL_SOURCES } from "@/lib/jobs/types";
+import { useI18n } from "@/lib/i18n/LanguageProvider";
 
 export function JobsFilters({
   initialQ = "",
@@ -19,8 +16,17 @@ export function JobsFilters({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useI18n();
   const [q, setQ] = useState(initialQ);
   const [source, setSource] = useState(initialSource);
+
+  const sources = [
+    { value: "all", label: t.jobsAll },
+    ...ALL_SOURCES.map((value) => ({
+      value,
+      label: SOURCE_LABEL[value as JobSource],
+    })),
+  ];
 
   function apply(nextQ: string, nextSource: string) {
     const params = new URLSearchParams(searchParams.toString());
@@ -28,7 +34,7 @@ export function JobsFilters({
     else params.delete("q");
     if (nextSource && nextSource !== "all") params.set("source", nextSource);
     else params.delete("source");
-    router.push(`/empleos?${params.toString()}`);
+    router.push(`/jobs?${params.toString()}`);
   }
 
   function onSubmit(e: FormEvent) {
@@ -39,16 +45,16 @@ export function JobsFilters({
   return (
     <form className="jobs-filters" onSubmit={onSubmit}>
       <div className="jobs-filters__search">
-        <label htmlFor="jobs-q">Search</label>
+        <label htmlFor="jobs-q">{t.jobsSearch}</label>
         <input
           id="jobs-q"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Keyword, stack, role…"
+          placeholder={t.jobsSearchPlaceholder}
         />
       </div>
       <div className="jobs-filters__source">
-        <span id="source-label">Source</span>
+        <span id="source-label">{t.jobsSource}</span>
         <div className="source-pills" role="group" aria-labelledby="source-label">
           {sources.map((s) => (
             <button
@@ -66,7 +72,7 @@ export function JobsFilters({
         </div>
       </div>
       <button type="submit" className="jobs-filters__submit">
-        Filter
+        {t.jobsFilter}
       </button>
     </form>
   );

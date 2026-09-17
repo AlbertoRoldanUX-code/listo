@@ -38,8 +38,20 @@ body {
     radial-gradient(1200px 600px at 10% -10%, #9fd9c955, transparent 55%),
     radial-gradient(900px 500px at 100% 0%, #ff8a3d22, transparent 45%),
     linear-gradient(165deg, #f7fcfa 0%, #e8f4ef 42%, #dceee8 100%);
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), var(--font-noto-georgian), sans-serif;
   line-height: 1.5;
+}
+
+html[lang="ka"] body,
+html[lang="ka"] .brand,
+html[lang="ka"] .hero__brand,
+html[lang="ka"] .hero__headline,
+html[lang="ka"] .section h2,
+html[lang="ka"] .page-head h1,
+html[lang="ka"] .easy-apply h2,
+html[lang="ka"] .job-row__title,
+html[lang="ka"] .job-detail__main h1 {
+  font-family: var(--font-noto-georgian), var(--font-body), sans-serif;
 }
 
 body::before {
@@ -96,7 +108,41 @@ textarea {
   padding: 0.9rem 1.25rem;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
+}
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.lang-switch {
+  display: inline-flex;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: color-mix(in oklab, white 55%, transparent);
+}
+
+.lang-switch button {
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ink);
+  opacity: 0.7;
+}
+
+.lang-switch button.is-active {
+  background: var(--ink);
+  color: var(--foam);
+  opacity: 1;
 }
 
 .brand {
@@ -110,9 +156,9 @@ textarea {
 }
 
 .brand__mark {
-  width: 1.1rem;
-  height: 1.1rem;
-  border-radius: 0.25rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 0.2rem;
   background: linear-gradient(135deg, var(--lime), var(--sun));
   box-shadow: 0 0 0 4px color-mix(in oklab, var(--lime) 28%, transparent);
   animation: pulse-mark 2.8s ease-in-out infinite;
@@ -131,7 +177,6 @@ textarea {
 .site-nav {
   display: flex;
   gap: 1.1rem;
-  margin-left: auto;
 }
 
 .site-nav__link {
@@ -216,14 +261,20 @@ textarea {
   }
 }
 
-.hero__headline {
+.hero__brand {
   font-family: var(--font-display), sans-serif;
-  max-width: 14ch;
-  font-size: clamp(2.6rem, 8vw, 5.2rem);
-  line-height: 0.95;
-  letter-spacing: -0.05em;
+  font-size: clamp(3.4rem, 12vw, 7.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.06em;
   font-weight: 800;
   margin: 0 0 1rem;
+}
+
+.hero__headline {
+  max-width: 28ch;
+  font-size: clamp(1.25rem, 2.6vw, 1.85rem);
+  font-weight: 500;
+  margin: 0 0 0.75rem;
 }
 
 .hero__sub {

@@ -1,19 +1,14 @@
 import { unstable_cache } from "next/cache";
 import type { Job, JobSource, JobsQuery, JobsResponse } from "./types";
 import { ALL_SOURCES } from "./types";
+import { SOURCE_LABEL } from "./labels";
 import { fetchArbeitnow } from "./sources/arbeitnow";
 import { fetchHimalayas } from "./sources/himalayas";
 import { fetchJobicy } from "./sources/jobicy";
 import { fetchRemoteOk } from "./sources/remoteok";
 import { fetchRemotive } from "./sources/remotive";
 
-export const SOURCE_LABEL: Record<JobSource, string> = {
-  remotive: "Remotive",
-  jobicy: "Jobicy",
-  himalayas: "Himalayas",
-  remoteok: "RemoteOK",
-  arbeitnow: "Arbeitnow",
-};
+export { SOURCE_LABEL };
 
 async function fetchAggregated(query: JobsQuery): Promise<JobsResponse> {
   const limit = query.limit ?? 40;

@@ -8,8 +8,10 @@ import {
   saveProfile,
   type Profile,
 } from "@/lib/profile";
+import { useI18n } from "@/lib/i18n/LanguageProvider";
 
 export function ProfileForm() {
+  const { t } = useI18n();
   const [profile, setProfile] = useState<Profile>(EMPTY_PROFILE);
   const [saved, setSaved] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -31,7 +33,7 @@ export function ProfileForm() {
   }
 
   if (!hydrated) {
-    return <p className="muted">Loading profile…</p>;
+    return <p className="muted">{t.profileLoading}</p>;
   }
 
   const ready = isProfileReady(profile);
@@ -39,13 +41,11 @@ export function ProfileForm() {
   return (
     <form className="profile-form" onSubmit={onSubmit}>
       <div className="profile-form__status" data-ready={ready}>
-        {ready
-          ? "Profile ready for one-click apply"
-          : "Name, email, or resume link still missing"}
+        {ready ? t.profileReady : t.profileMissing}
       </div>
 
       <div className="profile-grid">
-        <Field label="Full name" htmlFor="fullName">
+        <Field label={t.fieldFullName} htmlFor="fullName">
           <input
             id="fullName"
             value={profile.fullName}
@@ -53,7 +53,7 @@ export function ProfileForm() {
             required
           />
         </Field>
-        <Field label="Email" htmlFor="email">
+        <Field label={t.fieldEmail} htmlFor="email">
           <input
             id="email"
             type="email"
@@ -62,38 +62,38 @@ export function ProfileForm() {
             required
           />
         </Field>
-        <Field label="Phone" htmlFor="phone">
+        <Field label={t.fieldPhone} htmlFor="phone">
           <input
             id="phone"
             value={profile.phone}
             onChange={(e) => update("phone", e.target.value)}
           />
         </Field>
-        <Field label="Location / timezone" htmlFor="location">
+        <Field label={t.fieldLocation} htmlFor="location">
           <input
             id="location"
             value={profile.location}
             onChange={(e) => update("location", e.target.value)}
-            placeholder="GMT-5, Latam, Spain…"
+            placeholder={t.fieldLocationPh}
           />
         </Field>
-        <Field label="Role you’re looking for" htmlFor="role">
+        <Field label={t.fieldRole} htmlFor="role">
           <input
             id="role"
             value={profile.role}
             onChange={(e) => update("role", e.target.value)}
-            placeholder="Frontend engineer, Product designer…"
+            placeholder={t.fieldRolePh}
           />
         </Field>
-        <Field label="Key skills" htmlFor="skills">
+        <Field label={t.fieldSkills} htmlFor="skills">
           <input
             id="skills"
             value={profile.skills}
             onChange={(e) => update("skills", e.target.value)}
-            placeholder="React, TypeScript, Figma…"
+            placeholder={t.fieldSkillsPh}
           />
         </Field>
-        <Field label="LinkedIn" htmlFor="linkedin">
+        <Field label={t.fieldLinkedin} htmlFor="linkedin">
           <input
             id="linkedin"
             value={profile.linkedin}
@@ -101,42 +101,38 @@ export function ProfileForm() {
             placeholder="https://linkedin.com/in/…"
           />
         </Field>
-        <Field label="Portfolio" htmlFor="portfolio">
+        <Field label={t.fieldPortfolio} htmlFor="portfolio">
           <input
             id="portfolio"
             value={profile.portfolio}
             onChange={(e) => update("portfolio", e.target.value)}
           />
         </Field>
-        <Field label="Resume (public URL)" htmlFor="resumeUrl" wide>
+        <Field label={t.fieldResume} htmlFor="resumeUrl" wide>
           <input
             id="resumeUrl"
             value={profile.resumeUrl}
             onChange={(e) => update("resumeUrl", e.target.value)}
-            placeholder="Google Drive, Dropbox, Notion…"
+            placeholder={t.fieldResumePh}
             required
           />
         </Field>
-        <Field label="Cover letter template" htmlFor="coverLetter" wide>
+        <Field label={t.fieldCover} htmlFor="coverLetter" wide>
           <textarea
             id="coverLetter"
             rows={10}
             value={profile.coverLetter}
             onChange={(e) => update("coverLetter", e.target.value)}
           />
-          <p className="field-hint">
-            Variables: {"{{title}}"}, {"{{company}}"}, {"{{skills}}"},{" "}
-            {"{{linkedin}}"}, {"{{resume}}"}, {"{{name}}"}, {"{{email}}"},{" "}
-            {"{{role}}"}
-          </p>
+          <p className="field-hint">{t.fieldVariables}</p>
         </Field>
       </div>
 
       <div className="profile-form__footer">
         <button type="submit" className="btn btn--primary">
-          Save profile
+          {t.profileSave}
         </button>
-        {saved ? <span className="save-flash">Saved on this device</span> : null}
+        {saved ? <span className="save-flash">{t.profileSaved}</span> : null}
       </div>
     </form>
   );

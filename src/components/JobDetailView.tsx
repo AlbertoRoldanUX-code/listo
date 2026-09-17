@@ -1,21 +1,19 @@
+"use client";
+
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { EasyApply } from "@/components/EasyApply";
-import { getJobById, SOURCE_LABEL } from "@/lib/jobs/aggregate";
+import { SOURCE_LABEL } from "@/lib/jobs/labels";
+import type { Job } from "@/lib/jobs/types";
+import { useI18n } from "@/lib/i18n/LanguageProvider";
 
-type Params = Promise<{ id: string }>;
-
-export default async function JobDetailPage({ params }: { params: Params }) {
-  const { id } = await params;
-  const job = await getJobById(decodeURIComponent(id));
-
-  if (!job) notFound();
+export function JobDetailView({ job }: { job: Job }) {
+  const { t } = useI18n();
 
   return (
     <div className="job-detail">
       <article className="job-detail__main">
         <p>
-          <Link href="/empleos">← Back</Link>
+          <Link href="/jobs">{t.back}</Link>
         </p>
         <p className="job-row__company">
           {job.company} · {SOURCE_LABEL[job.source]}
