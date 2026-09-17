@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Remote jobs
 
-## Getting Started
+A site to find remote jobs and apply faster.
 
-First, run the development server:
+## What it does
+
+- Aggregates listings from **Remotive**, **Jobicy**, and **Himalayas** (public APIs, no API key)
+- Saves your profile and cover letter template in the browser
+- **Easy apply** flow: copy the letter, open the official posting, and log the application
+
+## Get started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Routes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route | Use |
+|------|-----|
+| `/` | Landing |
+| `/empleos` | Listings and filters |
+| `/empleos/[id]` | Detail + easy apply |
+| `/perfil` | Profile and cover letter |
+| `/postulaciones` | Local tracking |
+| `/api/jobs` | Jobs JSON |
 
-## Learn More
+## Note
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This site does not submit applications to companies: it takes you to the original source with your letter ready to paste.
